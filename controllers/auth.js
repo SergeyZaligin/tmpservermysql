@@ -2,6 +2,16 @@ const bcryptjs = require('bcryptjs');
 const User = require('../models/User');
 const errorHandler = require('../utils/errorHandler');
 const is = require('is_js');
+const userModel = require('../lib/mysql.js');
+var mysql = require('mysql');
+
+var pool = mysql.createPool({
+    host     : process.env.HOST,
+    user     : process.env.USERNAME,
+    password : process.env.PASSWORD,
+    database : process.env.DATABASE,
+    port     : process.env.PORT
+});
 
 
 module.exports.checkLogin = async (req, res) => {
@@ -173,7 +183,7 @@ module.exports.signup = async (req, res) => {
  * @param {*} res 
  */
 module.exports.registration = (req, res) => {
-
+    
     res.render('auth/registration', {
         title: 'Регистрация',
         meta: {

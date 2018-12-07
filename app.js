@@ -14,6 +14,18 @@ const dotenv = require('dotenv');
 const favicon = require('serve-favicon');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
+var mysql     =    require('mysql');
+
+var pool      =    mysql.createPool({
+  connectionLimit : 10, //important
+  host     : 'localhost',
+  user     : 'root',
+  password : '',
+  database : 'nodesql',
+  debug    :  true
+});
+
+
 
 dotenv.config({
   path: path.join(__dirname, '.env')
@@ -33,6 +45,20 @@ mongoose
 
 const app = express();
 
+function handle_database(req,res) {
+  // connection will be acquired automatically
+  pool.query("select * from user",function(err,rows){
+   if(err) {
+       return res.json({'error': true, 'message': 'Error occurred'+err});
+   }
+           //connection will be released as well.
+           res.json(rows);
+  });
+}
+
+app.get("/",function(req,res){-
+   handle_database(req,res);
+});
 
 app.use(session({
   secret: process.env.SESSION_SECRET,
