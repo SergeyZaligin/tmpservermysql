@@ -14,8 +14,8 @@ const dotenv = require('dotenv');
 const favicon = require('serve-favicon');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
-var mysql     =    require('mysql');
 
+var mysql     =    require('mysql');
 var pool      =    mysql.createPool({
   connectionLimit : 10, //important
   host     : 'localhost',
